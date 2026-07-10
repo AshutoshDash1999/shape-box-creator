@@ -62,11 +62,15 @@ export function PointList({
                 "flex items-center gap-2 rounded-md px-1 py-1",
                 selectedPointIndex === i && "bg-accent"
               )}
-              onClick={() => dispatch({ type: "SELECT_POINT", index: i })}
             >
-              <span className="w-4 shrink-0 text-xs text-muted-foreground">
+              <button
+                type="button"
+                onClick={() => dispatch({ type: "SELECT_POINT", index: i })}
+                aria-label={`Select point ${i + 1}`}
+                className="w-4 shrink-0 rounded-sm text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+              >
                 {i + 1}
-              </span>
+              </button>
               <Input
                 type="number"
                 value={Math.round(p.x * 10) / 10}

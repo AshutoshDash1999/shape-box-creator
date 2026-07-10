@@ -82,6 +82,7 @@ export function ShapeGallery({
                   <button
                     type="button"
                     className="group"
+                    aria-label={`Load shape "${shape.name}"`}
                     onClick={() =>
                       dispatch({
                         type: "LOAD_SHAPE",

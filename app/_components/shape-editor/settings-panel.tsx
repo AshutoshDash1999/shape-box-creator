@@ -104,7 +104,7 @@ export function SettingsPanel({
               })
             }
           >
-            <SelectTrigger size="sm">
+            <SelectTrigger size="sm" aria-label="Output precision">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -255,6 +255,7 @@ function SliderField({
         min={min}
         max={max}
         step={step}
+        aria-label={label}
       />
     </div>
   )

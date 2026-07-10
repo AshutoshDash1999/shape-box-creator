@@ -41,6 +41,7 @@ function CodeBlock({ code }: { code: string }) {
         variant="outline"
         className="absolute top-2 right-2"
         onClick={() => copy(code)}
+        aria-live="polite"
       >
         {copied ? (
           <>
