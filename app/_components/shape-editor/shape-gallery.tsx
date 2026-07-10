@@ -36,13 +36,13 @@ export function ShapeGallery({
       </div>
 
       <TabsContent value="presets">
-        <ScrollArea className="h-40">
-          <div className="grid grid-cols-4 gap-3 pr-3 sm:grid-cols-6 lg:grid-cols-4">
+        <ScrollArea className="h-36">
+          <div className="flex gap-3 pr-3">
             {PRESET_SHAPES.map((preset) => (
               <button
                 key={preset.id}
                 type="button"
-                className="flex flex-col items-center gap-1.5"
+                className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                 onClick={() =>
                   dispatch({
                     type: "LOAD_POINTS",
@@ -51,13 +51,15 @@ export function ShapeGallery({
                   })
                 }
               >
-                <span
-                  className="size-12 bg-primary/70 transition-transform hover:scale-105"
-                  style={{
-                    clipPath: pointsToClipPathPolygon(preset.points, 1),
-                  }}
-                />
-                <span className="text-[11px] text-muted-foreground">
+                <span className="flex size-14 items-center justify-center rounded-lg border border-mat-border bg-mat transition-colors group-hover:border-cta">
+                  <span
+                    className="size-8 bg-cta transition-transform group-hover:scale-110"
+                    style={{
+                      clipPath: pointsToClipPathPolygon(preset.points, 1),
+                    }}
+                  />
+                </span>
+                <span className="text-center text-base leading-tight text-muted-foreground">
                   {preset.name}
                 </span>
               </button>
@@ -68,20 +70,19 @@ export function ShapeGallery({
 
       <TabsContent value="my-shapes">
         {savedShapes.length === 0 ? (
-          <p className="text-xs text-muted-foreground">
+          <p className="text-base text-muted-foreground">
             No saved shapes yet. Use &ldquo;Save shape&rdquo; to keep one here.
           </p>
         ) : (
-          <ScrollArea className="h-40">
-            <div className="grid grid-cols-4 gap-3 pr-3 sm:grid-cols-6 lg:grid-cols-4">
+          <ScrollArea className="h-36">
+            <div className="flex gap-3 pr-3">
               {savedShapes.map((shape) => (
                 <div
                   key={shape.id}
-                  className="flex flex-col items-center gap-1.5"
+                  className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                 >
                   <button
                     type="button"
-                    className="group"
                     aria-label={`Load shape "${shape.name}"`}
                     onClick={() =>
                       dispatch({
@@ -91,9 +92,10 @@ export function ShapeGallery({
                         border: shape.border,
                       })
                     }
+                    className="flex size-14 items-center justify-center rounded-lg border border-mat-border bg-mat transition-colors group-hover:border-cta"
                   >
                     <span
-                      className="block size-12 transition-transform group-hover:scale-105"
+                      className="block size-8 rounded-xs transition-transform group-hover:scale-110"
                       style={{
                         clipPath: pointsToClipPathPolygon(shape.points, 1),
                         background:
@@ -103,8 +105,8 @@ export function ShapeGallery({
                       }}
                     />
                   </button>
-                  <div className="flex items-center gap-1">
-                    <span className="max-w-16 truncate text-[11px] text-muted-foreground">
+                  <div className="flex items-center gap-0.5">
+                    <span className="max-w-16 truncate text-base text-muted-foreground">
                       {shape.name}
                     </span>
                     <Button

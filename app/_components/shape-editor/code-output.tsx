@@ -5,6 +5,7 @@ import { CheckIcon, CopyIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
+import { cn } from "@/lib/utils"
 
 type CodeOutputProps = {
   cssSnippet: string
@@ -33,13 +34,16 @@ function CodeBlock({ code }: { code: string }) {
 
   return (
     <div className="relative">
-      <pre className="max-h-48 overflow-auto rounded-lg border bg-muted/30 p-3 pr-24 text-xs whitespace-pre-wrap">
+      <pre className="max-h-48 overflow-auto rounded-lg border bg-muted/30 p-3 pr-32 font-mono text-base whitespace-pre-wrap">
         <code>{code}</code>
       </pre>
       <Button
         size="sm"
-        variant="outline"
-        className="absolute top-2 right-2"
+        variant="cta"
+        className={cn(
+          "absolute top-2 right-2 transition-colors",
+          copied && "bg-success text-success-foreground hover:bg-success"
+        )}
         onClick={() => copy(code)}
         aria-live="polite"
       >

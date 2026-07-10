@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Nunito } from "next/font/google"
+import { JetBrains_Mono, Nunito } from "next/font/google"
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/seo"
@@ -7,6 +7,10 @@ import { cn } from "@/lib/utils"
 import "./globals.css"
 
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-sans" })
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -47,7 +51,12 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", "font-sans", nunito.variable)}
+      className={cn(
+        "antialiased",
+        "font-sans",
+        nunito.variable,
+        jetbrainsMono.variable
+      )}
     >
       <body>
         <ThemeProvider>{children}</ThemeProvider>

@@ -7,41 +7,62 @@ import { PreviewPanel } from "@/app/_components/shape-editor/preview-panel"
 import { SettingsPanel } from "@/app/_components/shape-editor/settings-panel"
 import { ShapeGallery } from "@/app/_components/shape-editor/shape-gallery"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Separator } from "@/components/ui/separator"
 import { useSavedShapes } from "@/hooks/use-saved-shapes"
 import { useShapeEditor } from "@/hooks/use-shape-editor"
+import { pointsToClipPathPolygon } from "@/lib/shapes/path-utils"
 
 export default function Page() {
   const { state, dispatch, derived } = useShapeEditor()
   const { shapes: savedShapes, save, remove } = useSavedShapes()
 
+  const markBackground =
+    state.fill.mode === "gradient"
+      ? `linear-gradient(${state.fill.gradientAngle}deg, ${state.fill.color1}, ${state.fill.color2})`
+      : state.fill.color1
+
   return (
-    <div className="mx-auto flex min-h-svh max-w-7xl flex-col gap-6 p-4 sm:p-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="text-lg font-semibold">Shape Box Creator</h1>
-        <p className="text-sm text-muted-foreground">
-          Drag polygon points to design unconventional UI blocks, then copy
-          the clip-path or SVG.
-        </p>
+    <div className="mx-auto flex min-h-svh max-w-7xl flex-col gap-8 p-4 sm:p-6">
+      <header className="flex items-center gap-3.5">
+        <span
+          aria-hidden
+          className="size-9 shrink-0 rounded-md ring-1 ring-mat-border"
+          style={{
+            clipPath: pointsToClipPathPolygon(state.points, 1),
+            background: markBackground,
+          }}
+        />
+        <div className="flex flex-col gap-0.5">
+          <h1 className="font-heading text-xl font-extrabold tracking-tight">
+            Shape Box Creator
+          </h1>
+          <p className="text-base text-muted-foreground">
+            Drag polygon points to design unconventional UI blocks, then copy
+            the clip-path or SVG.
+          </p>
+        </div>
       </header>
 
-      <Card>
-        <CardContent>
-          <ShapeGallery
-            savedShapes={savedShapes}
-            onSaveCurrent={(name) =>
-              save(name, state.points, state.fill, state.border)
-            }
-            onRemoveSaved={remove}
-            dispatch={dispatch}
-          />
-        </CardContent>
-      </Card>
+      <section className="flex flex-col gap-3 rounded-xl border bg-card p-4 ring-1 ring-foreground/10 sm:p-5">
+        <ShapeGallery
+          savedShapes={savedShapes}
+          onSaveCurrent={(name) =>
+            save(name, state.points, state.fill, state.border)
+          }
+          onRemoveSaved={remove}
+          dispatch={dispatch}
+        />
+      </section>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
         <Card>
           <CardHeader>
-            <CardTitle>Editor</CardTitle>
+            <CardTitle className="flex items-center justify-between gap-2">
+              Editor
+              <span className="font-mono text-base font-normal tabular-nums text-muted-foreground">
+                {state.points.length} points
+              </span>
+            </CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
             <EditorCanvas
@@ -63,33 +84,31 @@ export default function Page() {
         </Card>
 
         <Card>
-          <CardContent>
-            <Tabs defaultValue="settings">
-              <TabsList className="w-full">
-                <TabsTrigger value="settings">Settings</TabsTrigger>
-                <TabsTrigger value="export">Preview &amp; Export</TabsTrigger>
-              </TabsList>
-              <TabsContent value="settings">
-                <SettingsPanel
-                  fill={state.fill}
-                  border={state.border}
-                  canvas={state.canvas}
-                  dispatch={dispatch}
-                />
-              </TabsContent>
-              <TabsContent value="export" className="flex flex-col gap-4">
-                <PreviewPanel
-                  clipPath={derived.clipPath}
-                  fill={state.fill}
-                  border={state.border}
-                  canvas={state.canvas}
-                />
-                <CodeOutput
-                  cssSnippet={derived.cssSnippet}
-                  svgMarkup={derived.svgMarkup}
-                />
-              </TabsContent>
-            </Tabs>
+          <CardContent className="flex flex-col gap-5">
+            <PreviewPanel
+              clipPath={derived.clipPath}
+              fill={state.fill}
+              border={state.border}
+              canvas={state.canvas}
+            />
+            <CodeOutput
+              cssSnippet={derived.cssSnippet}
+              svgMarkup={derived.svgMarkup}
+            />
+
+            <Separator />
+
+            <div className="flex flex-col gap-4">
+              <span className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+                Style
+              </span>
+              <SettingsPanel
+                fill={state.fill}
+                border={state.border}
+                canvas={state.canvas}
+                dispatch={dispatch}
+              />
+            </div>
           </CardContent>
         </Card>
       </div>

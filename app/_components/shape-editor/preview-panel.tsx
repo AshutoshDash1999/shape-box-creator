@@ -33,9 +33,17 @@ export function PreviewPanel({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-center rounded-lg border bg-muted/20 p-8">
+      <div className="flex items-center justify-between">
+        <span className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+          Export
+        </span>
+        <span className="rounded-full bg-cta/15 px-3 py-1 font-mono text-base font-medium text-cta">
+          Ready
+        </span>
+      </div>
+      <div className="flex items-center justify-center rounded-xl border border-mat-border bg-mat p-8">
         <div
-          className="flex items-center justify-center shadow-lg"
+          className="flex items-center justify-center shadow-lg transition-[clip-path] duration-200"
           style={{
             width: canvas.width,
             height: canvas.height,
@@ -50,7 +58,7 @@ export function PreviewPanel({
           {canvas.showSampleContent && (
             <div className="mix-blend-difference flex flex-col items-center gap-1.5 px-4 text-center text-white">
               <ShapesIcon className="size-6" />
-              <span className="text-xs font-medium whitespace-pre-wrap">
+              <span className="text-base font-medium whitespace-pre-wrap">
                 {sampleText}
               </span>
             </div>
@@ -60,7 +68,7 @@ export function PreviewPanel({
 
       {canvas.showSampleContent && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="sample-text" className="text-xs font-normal text-muted-foreground">
+          <Label htmlFor="sample-text" className="text-base font-normal text-muted-foreground">
             Sample text
           </Label>
           <Textarea
@@ -69,7 +77,7 @@ export function PreviewPanel({
             onChange={(event) => setSampleText(event.target.value)}
             placeholder="Type some text to preview inside the block…"
             rows={3}
-            className="text-sm"
+            className="text-base"
           />
         </div>
       )}

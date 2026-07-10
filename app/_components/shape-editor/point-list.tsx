@@ -48,13 +48,13 @@ export function PointList({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">Points ({points.length})</span>
+        <span className="text-base font-medium">Points ({points.length})</span>
         <Button size="sm" variant="outline" onClick={handleAddPoint}>
           <PlusIcon /> Add point
         </Button>
       </div>
-      <ScrollArea className="h-48 rounded-lg border">
-        <div className="flex flex-col gap-1 p-2">
+      <ScrollArea className="h-56 rounded-lg border">
+        <div className="flex flex-col gap-1.5 p-2">
           {points.map((p, i) => (
             <div
               key={i}
@@ -67,7 +67,10 @@ export function PointList({
                 type="button"
                 onClick={() => dispatch({ type: "SELECT_POINT", index: i })}
                 aria-label={`Select point ${i + 1}`}
-                className="w-4 shrink-0 rounded-sm text-xs text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                className={cn(
+                  "w-6 shrink-0 rounded-sm font-mono text-base text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                  selectedPointIndex === i && "font-semibold text-cta"
+                )}
               >
                 {i + 1}
               </button>
@@ -76,7 +79,7 @@ export function PointList({
                 value={Math.round(p.x * 10) / 10}
                 onChange={handleCoordinateChange(i, "x")}
                 onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
-                className="h-8"
+                className="h-9 font-mono tabular-nums"
                 min={0}
                 max={100}
                 step={0.5}
@@ -87,7 +90,7 @@ export function PointList({
                 value={Math.round(p.y * 10) / 10}
                 onChange={handleCoordinateChange(i, "y")}
                 onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
-                className="h-8"
+                className="h-9 font-mono tabular-nums"
                 min={0}
                 max={100}
                 step={0.5}

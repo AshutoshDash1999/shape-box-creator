@@ -112,48 +112,6 @@ export function EditorCanvas({
     }
   }
 
-  function handleActivate(action: () => void) {
-    return (event: React.KeyboardEvent) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault()
-        action()
-      }
-    }
-  }
-
-  function handlePointKeyDown(index: number, point: Point) {
-    return (event: React.KeyboardEvent<SVGCircleElement>) => {
-      const step = event.shiftKey ? (snapEnabled ? gridSize * 5 : 10) : snapEnabled ? gridSize : 1
-      let dx = 0
-      let dy = 0
-      switch (event.key) {
-        case "ArrowLeft":
-          dx = -step
-          break
-        case "ArrowRight":
-          dx = step
-          break
-        case "ArrowUp":
-          dy = -step
-          break
-        case "ArrowDown":
-          dy = step
-          break
-        default:
-          return
-      }
-      event.preventDefault()
-      dispatch({
-        type: "MOVE_POINT",
-        index,
-        point: {
-          x: clampPercent(point.x + dx),
-          y: clampPercent(point.y + dy),
-        },
-      })
-    }
-  }
-
   return (
     <div className="rounded-lg border bg-muted/30 p-3">
       <svg
@@ -202,15 +160,11 @@ export function EditorCanvas({
             cx={toVb(mid).x}
             cy={toVb(mid).y}
             r={1.6}
-            className="fill-background stroke-primary/50 outline-none hover:fill-primary/30 focus-visible:fill-primary/30 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-1"
+            className="fill-background stroke-primary/50 hover:fill-primary/30"
             strokeWidth={0.4}
             strokeDasharray="1.2 1.2"
             style={{ cursor: "copy" }}
-            tabIndex={0}
-            role="button"
-            aria-label={`Add point on edge ${i + 1}`}
             onClick={handleAddPoint(i)}
-            onKeyDown={handleActivate(handleAddPoint(i))}
           />
         ))}
 
@@ -221,20 +175,15 @@ export function EditorCanvas({
             cy={toVb(p).y}
             r={2.2}
             className={cn(
-              "fill-background stroke-primary outline-none focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-1",
+              "fill-background stroke-primary",
               selectedPointIndex === i && "fill-primary"
             )}
             strokeWidth={0.8}
             style={{ cursor: "grab", touchAction: "none" }}
-            tabIndex={0}
-            role="button"
-            aria-label={`Point ${i + 1} of ${points.length}, ${Math.round(p.x)}% across, ${Math.round(p.y)}% down. Use arrow keys to move.`}
             onPointerDown={handlePointerDown(i)}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
-            onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
-            onKeyDown={handlePointKeyDown(i, p)}
           />
         ))}
       </svg>

@@ -34,7 +34,9 @@ export function SettingsPanel({
   return (
     <div className="flex flex-col gap-5">
       <section className="flex flex-col gap-3">
-        <h3 className="text-sm font-medium">Canvas</h3>
+        <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+          Canvas
+        </h3>
         <SliderField
           label="Width"
           value={canvas.width}
@@ -67,7 +69,7 @@ export function SettingsPanel({
           }
         />
         <div className="flex items-center justify-between">
-          <Label htmlFor="snap-toggle" className="text-xs font-normal text-muted-foreground">
+          <Label htmlFor="snap-toggle" className="text-base font-normal text-muted-foreground">
             Snap to grid
           </Label>
           <Switch
@@ -92,7 +94,7 @@ export function SettingsPanel({
           />
         )}
         <div className="flex items-center justify-between gap-2">
-          <Label className="text-xs font-normal text-muted-foreground">
+          <Label className="text-base font-normal text-muted-foreground">
             Output precision
           </Label>
           <Select
@@ -117,7 +119,7 @@ export function SettingsPanel({
         <div className="flex items-center justify-between">
           <Label
             htmlFor="sample-content-toggle"
-            className="text-xs font-normal text-muted-foreground"
+            className="text-base font-normal text-muted-foreground"
           >
             Show sample content
           </Label>
@@ -134,7 +136,9 @@ export function SettingsPanel({
       <Separator />
 
       <section className="flex flex-col gap-3">
-        <h3 className="text-sm font-medium">Fill</h3>
+        <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+          Fill
+        </h3>
         <div className="flex gap-1.5">
           <Button
             size="sm"
@@ -186,7 +190,9 @@ export function SettingsPanel({
 
       <section className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium">Border</h3>
+          <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+            Border
+          </h3>
           <Switch
             checked={border.enabled}
             onCheckedChange={(enabled) =>
@@ -241,10 +247,10 @@ function SliderField({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between">
-        <Label className="text-xs font-normal text-muted-foreground">
+        <Label className="text-base font-normal text-muted-foreground">
           {label}
         </Label>
-        <span className="text-xs text-muted-foreground tabular-nums">
+        <span className="font-mono text-base tabular-nums text-muted-foreground">
           {value}
           {suffix}
         </span>
@@ -272,7 +278,7 @@ function ColorField({
 }) {
   return (
     <div className="flex items-center justify-between gap-2">
-      <Label className="text-xs font-normal text-muted-foreground">
+      <Label className="text-base font-normal text-muted-foreground">
         {label}
       </Label>
       <div className="flex items-center gap-2">
@@ -286,7 +292,7 @@ function ColorField({
         <Input
           value={value}
           onChange={(event) => onChange(event.target.value)}
-          className="h-8 w-24 font-mono text-xs"
+          className="h-9 w-28 font-mono text-base"
         />
       </div>
     </div>
