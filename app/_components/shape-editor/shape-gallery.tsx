@@ -1,7 +1,7 @@
 "use client"
 
-import * as React from "react"
 import { AnimatePresence, motion } from "motion/react"
+import * as React from "react"
 
 import { SaveShapeDialog } from "@/app/_components/shape-editor/save-shape-dialog"
 import { Button } from "@/components/ui/button"
@@ -38,14 +38,20 @@ export function ShapeGallery({
 
       <TabsContent value="presets">
         <ScrollArea className="h-36">
-          <div className="flex gap-3 pr-3">
-            {PRESET_SHAPES.map((preset) => (
+          <div className="flex gap-3 p-3">
+            {PRESET_SHAPES.map((preset, index) => (
               <motion.button
                 key={preset.id}
                 type="button"
+                initial={{ opacity: 0, filter: "grayscale(1) brightness(1.5) blur(8px)" }}
+                animate={{ opacity: 1, filter: "grayscale(0) brightness(1) blur(0px)" }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeOut",
+                  delay: index * 0.05,
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.94 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
                 className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                 onClick={() =>
                   dispatch({
@@ -81,14 +87,14 @@ export function ShapeGallery({
           <ScrollArea className="h-36">
             <div className="flex gap-3 pr-3">
               <AnimatePresence mode="popLayout">
-                {savedShapes.map((shape) => (
+                {savedShapes.map((shape, index) => (
                   <motion.div
                     key={shape.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.85, y: 6 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    initial={{ opacity: 0, scale: 0.85, y: 6, filter: "grayscale(1) brightness(1.5) blur(8px)" }}
+                    animate={{ opacity: 1, scale: 1, y: 0, filter: "grayscale(0) brightness(1) blur(0px)" }}
                     exit={{ opacity: 0, scale: 0.85 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.05 }}
                     className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                   >
                     <motion.button

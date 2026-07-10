@@ -38,6 +38,16 @@ const itemVariants: Variants = {
   },
 }
 
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 14, filter: "grayscale(1) brightness(1.5) blur(8px)" },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "grayscale(0) brightness(1) blur(0px)",
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.3 },
+  },
+}
+
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
@@ -101,7 +111,7 @@ export default function Page() {
       </motion.header>
 
       <motion.section
-        variants={itemVariants}
+        variants={cardVariants}
         className="flex flex-col gap-3 rounded-xl border bg-card p-4 ring-1 ring-foreground/10 sm:p-5"
       >
         <ShapeGallery
@@ -114,11 +124,9 @@ export default function Page() {
         />
       </motion.section>
 
-      <motion.div
-        variants={itemVariants}
-        className="grid gap-6 lg:grid-cols-[1fr_400px]"
-      >
-        <Card>
+      <motion.div className="grid gap-6 lg:grid-cols-[1fr_400px]" variants={containerVariants}>
+        <motion.div variants={cardVariants}>
+          <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between gap-2">
               Editor
@@ -149,8 +157,10 @@ export default function Page() {
             <CanvasSettingsPanel canvas={state.canvas} dispatch={dispatch} />
           </CardContent>
         </Card>
+        </motion.div>
 
-        <Card>
+        <motion.div variants={cardVariants}>
+          <Card>
           <CardContent className="flex flex-col gap-5">
             <PreviewPanel
               clipPath={derived.clipPath}
@@ -172,6 +182,7 @@ export default function Page() {
             />
           </CardContent>
         </Card>
+        </motion.div>
       </motion.div>
 
       <motion.footer
