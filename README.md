@@ -2,7 +2,7 @@
 
 A visual editor for designing unconventional UI blocks with polygon clip-paths. Drag points on a canvas to shape a box, then copy out the generated CSS `clip-path` or SVG markup.
 
-![Shape Box Creator screenshot](./public/screenshot.png)
+<img width="1280" height="832" alt="Screenshot 2026-07-10 at 6 40 24 PM" src="https://github.com/user-attachments/assets/5cdb075e-8ee1-4905-81a8-00b674afe199" />
 
 ## Features
 
