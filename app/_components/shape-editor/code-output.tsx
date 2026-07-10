@@ -1,11 +1,10 @@
 "use client"
 
-import { CheckIcon, CopyIcon } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { cn } from "@/lib/utils"
+import { Copy3, CopySuccess2 } from "reicon-react"
 
 type CodeOutputProps = {
   cssSnippet: string
@@ -49,11 +48,11 @@ function CodeBlock({ code }: { code: string }) {
       >
         {copied ? (
           <>
-            <CheckIcon /> Copied
+            <CopySuccess2 /> Copied
           </>
         ) : (
           <>
-            <CopyIcon /> Copy
+            <Copy3 /> Copy
           </>
         )}
       </Button>

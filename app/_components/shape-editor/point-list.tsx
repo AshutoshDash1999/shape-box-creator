@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { PlusIcon, Trash2Icon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,6 +9,8 @@ import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import { MIN_POINTS, clampPercent } from "@/lib/shapes/path-utils"
 import type { Point } from "@/lib/shapes/types"
 import { cn } from "@/lib/utils"
+import { Plus } from "lucide-react"
+import { Trash9 } from "reicon-react"
 
 type PointListProps = {
   points: Point[]
@@ -50,7 +51,7 @@ export function PointList({
       <div className="flex items-center justify-between">
         <span className="text-base font-medium">Points ({points.length})</span>
         <Button size="sm" variant="outline" onClick={handleAddPoint}>
-          <PlusIcon /> Add point
+          <Plus /> Add point
         </Button>
       </div>
       <ScrollArea className="h-56 rounded-lg border">
@@ -106,7 +107,7 @@ export function PointList({
                 }}
                 aria-label={`Delete point ${i + 1}`}
               >
-                <Trash2Icon />
+                <Trash9 />
               </Button>
             </div>
           ))}

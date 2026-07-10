@@ -18,123 +18,131 @@ import { Switch } from "@/components/ui/switch"
 import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import type { BorderSettings, CanvasSettings, FillSettings } from "@/lib/shapes/types"
 
+type CanvasSettingsPanelProps = {
+  canvas: CanvasSettings
+  dispatch: React.Dispatch<ShapeEditorAction>
+}
+
+export function CanvasSettingsPanel({
+  canvas,
+  dispatch,
+}: CanvasSettingsPanelProps) {
+  return (
+    <section className="flex flex-col gap-3">
+      <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
+        Canvas
+      </h3>
+      <SliderField
+        label="Width"
+        value={canvas.width}
+        min={80}
+        max={640}
+        step={4}
+        suffix="px"
+        onChange={(width) => dispatch({ type: "SET_CANVAS", canvas: { width } })}
+      />
+      <SliderField
+        label="Height"
+        value={canvas.height}
+        min={80}
+        max={640}
+        step={4}
+        suffix="px"
+        onChange={(height) =>
+          dispatch({ type: "SET_CANVAS", canvas: { height } })
+        }
+      />
+      <SliderField
+        label="Corner radius"
+        value={canvas.cornerRadius}
+        min={0}
+        max={100}
+        step={1}
+        suffix="px"
+        onChange={(cornerRadius) =>
+          dispatch({ type: "SET_CANVAS", canvas: { cornerRadius } })
+        }
+      />
+      <div className="flex items-center justify-between">
+        <Label htmlFor="snap-toggle" className="text-base font-normal text-muted-foreground">
+          Snap to grid
+        </Label>
+        <Switch
+          id="snap-toggle"
+          checked={canvas.snapEnabled}
+          onCheckedChange={(snapEnabled) =>
+            dispatch({ type: "SET_CANVAS", canvas: { snapEnabled } })
+          }
+        />
+      </div>
+      {canvas.snapEnabled && (
+        <SliderField
+          label="Grid size"
+          value={canvas.gridSize}
+          min={1}
+          max={25}
+          step={1}
+          suffix="%"
+          onChange={(gridSize) =>
+            dispatch({ type: "SET_CANVAS", canvas: { gridSize } })
+          }
+        />
+      )}
+      <div className="flex items-center justify-between gap-2">
+        <Label className="text-base font-normal text-muted-foreground">
+          Output precision
+        </Label>
+        <Select
+          value={String(canvas.precision)}
+          onValueChange={(value) =>
+            dispatch({
+              type: "SET_CANVAS",
+              canvas: { precision: Number(value) },
+            })
+          }
+        >
+          <SelectTrigger size="sm" aria-label="Output precision">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">0 decimals</SelectItem>
+            <SelectItem value="1">1 decimal</SelectItem>
+            <SelectItem value="2">2 decimals</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex items-center justify-between">
+        <Label
+          htmlFor="sample-content-toggle"
+          className="text-base font-normal text-muted-foreground"
+        >
+          Show sample content
+        </Label>
+        <Switch
+          id="sample-content-toggle"
+          checked={canvas.showSampleContent}
+          onCheckedChange={(showSampleContent) =>
+            dispatch({ type: "SET_CANVAS", canvas: { showSampleContent } })
+          }
+        />
+      </div>
+    </section>
+  )
+}
+
 type SettingsPanelProps = {
   fill: FillSettings
   border: BorderSettings
-  canvas: CanvasSettings
   dispatch: React.Dispatch<ShapeEditorAction>
 }
 
 export function SettingsPanel({
   fill,
   border,
-  canvas,
   dispatch,
 }: SettingsPanelProps) {
   return (
     <div className="flex flex-col gap-5">
-      <section className="flex flex-col gap-3">
-        <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
-          Canvas
-        </h3>
-        <SliderField
-          label="Width"
-          value={canvas.width}
-          min={80}
-          max={640}
-          step={4}
-          suffix="px"
-          onChange={(width) => dispatch({ type: "SET_CANVAS", canvas: { width } })}
-        />
-        <SliderField
-          label="Height"
-          value={canvas.height}
-          min={80}
-          max={640}
-          step={4}
-          suffix="px"
-          onChange={(height) =>
-            dispatch({ type: "SET_CANVAS", canvas: { height } })
-          }
-        />
-        <SliderField
-          label="Corner radius"
-          value={canvas.cornerRadius}
-          min={0}
-          max={100}
-          step={1}
-          suffix="px"
-          onChange={(cornerRadius) =>
-            dispatch({ type: "SET_CANVAS", canvas: { cornerRadius } })
-          }
-        />
-        <div className="flex items-center justify-between">
-          <Label htmlFor="snap-toggle" className="text-base font-normal text-muted-foreground">
-            Snap to grid
-          </Label>
-          <Switch
-            id="snap-toggle"
-            checked={canvas.snapEnabled}
-            onCheckedChange={(snapEnabled) =>
-              dispatch({ type: "SET_CANVAS", canvas: { snapEnabled } })
-            }
-          />
-        </div>
-        {canvas.snapEnabled && (
-          <SliderField
-            label="Grid size"
-            value={canvas.gridSize}
-            min={1}
-            max={25}
-            step={1}
-            suffix="%"
-            onChange={(gridSize) =>
-              dispatch({ type: "SET_CANVAS", canvas: { gridSize } })
-            }
-          />
-        )}
-        <div className="flex items-center justify-between gap-2">
-          <Label className="text-base font-normal text-muted-foreground">
-            Output precision
-          </Label>
-          <Select
-            value={String(canvas.precision)}
-            onValueChange={(value) =>
-              dispatch({
-                type: "SET_CANVAS",
-                canvas: { precision: Number(value) },
-              })
-            }
-          >
-            <SelectTrigger size="sm" aria-label="Output precision">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="0">0 decimals</SelectItem>
-              <SelectItem value="1">1 decimal</SelectItem>
-              <SelectItem value="2">2 decimals</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex items-center justify-between">
-          <Label
-            htmlFor="sample-content-toggle"
-            className="text-base font-normal text-muted-foreground"
-          >
-            Show sample content
-          </Label>
-          <Switch
-            id="sample-content-toggle"
-            checked={canvas.showSampleContent}
-            onCheckedChange={(showSampleContent) =>
-              dispatch({ type: "SET_CANVAS", canvas: { showSampleContent } })
-            }
-          />
-        </div>
-      </section>
-
-      <Separator />
-
       <section className="flex flex-col gap-3">
         <h3 className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
           Fill

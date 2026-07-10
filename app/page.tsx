@@ -4,7 +4,10 @@ import { CodeOutput } from "@/app/_components/shape-editor/code-output"
 import { EditorCanvas } from "@/app/_components/shape-editor/editor-canvas"
 import { PointList } from "@/app/_components/shape-editor/point-list"
 import { PreviewPanel } from "@/app/_components/shape-editor/preview-panel"
-import { SettingsPanel } from "@/app/_components/shape-editor/settings-panel"
+import {
+  CanvasSettingsPanel,
+  SettingsPanel,
+} from "@/app/_components/shape-editor/settings-panel"
 import { ShapeGallery } from "@/app/_components/shape-editor/shape-gallery"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -80,6 +83,10 @@ export default function Page() {
               selectedPointIndex={state.selectedPointIndex}
               dispatch={dispatch}
             />
+
+            <Separator />
+
+            <CanvasSettingsPanel canvas={state.canvas} dispatch={dispatch} />
           </CardContent>
         </Card>
 
@@ -98,17 +105,11 @@ export default function Page() {
 
             <Separator />
 
-            <div className="flex flex-col gap-4">
-              <span className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
-                Style
-              </span>
-              <SettingsPanel
-                fill={state.fill}
-                border={state.border}
-                canvas={state.canvas}
-                dispatch={dispatch}
-              />
-            </div>
+            <SettingsPanel
+              fill={state.fill}
+              border={state.border}
+              dispatch={dispatch}
+            />
           </CardContent>
         </Card>
       </div>

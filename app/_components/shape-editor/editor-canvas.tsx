@@ -63,7 +63,9 @@ export function EditorCanvas({
     cornerRadiusVb
   )
   const midpoints = getEdgeMidpoints(points)
-  const showGrid = snapEnabled && gridSize > 0
+  // The grid is a visual aid independent of snapping — it should stay
+  // visible even when "snap to grid" is off, as long as a grid size is set.
+  const showGrid = gridSize > 0
 
   function toPercent(clientX: number, clientY: number, rect: DOMRect): Point {
     const x = ((clientX - rect.left) / rect.width) * 100
@@ -113,13 +115,13 @@ export function EditorCanvas({
   }
 
   return (
-    <div className="rounded-lg border bg-muted/30 p-3">
+    <div className="rounded-lg border border-mat-border bg-mat p-3">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
         preserveAspectRatio="none"
-        style={{ aspectRatio }}
-        className="w-full touch-none rounded-md bg-background select-none"
+        style={{ aspectRatio, overflow: "visible" }}
+        className="w-full touch-none select-none"
       >
         {showGrid && (
           <>
@@ -133,7 +135,7 @@ export function EditorCanvas({
                 <path
                   d={`M ${gridSize * aspectRatio} 0 L 0 0 0 ${gridSize}`}
                   fill="none"
-                  className="stroke-border"
+                  className="stroke-mat-grid"
                   strokeWidth={0.4}
                 />
               </pattern>
