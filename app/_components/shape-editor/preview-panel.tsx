@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ShapesIcon } from "lucide-react"
+import { Shapes } from "reicon-react"
 
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -83,8 +83,8 @@ export function PreviewPanel({
             }}
           >
             {canvas.showSampleContent && (
-              <div className="mix-blend-difference flex flex-col items-center gap-1.5 px-4 text-center text-white">
-                <ShapesIcon className="size-6" />
+              <div className="flex flex-col items-center gap-1.5 px-4 text-center text-white mix-blend-difference">
+                <Shapes className="size-6" weight="Filled" />
                 <span className="text-base font-medium whitespace-pre-wrap">
                   {sampleText}
                 </span>
@@ -96,7 +96,10 @@ export function PreviewPanel({
 
       {canvas.showSampleContent && (
         <div className="flex flex-col gap-1.5">
-          <Label htmlFor="sample-text" className="text-base font-normal text-muted-foreground">
+          <Label
+            htmlFor="sample-text"
+            className="text-base font-normal text-muted-foreground"
+          >
             Sample text
           </Label>
           <Textarea

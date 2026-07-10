@@ -9,8 +9,7 @@ import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import { MIN_POINTS, clampPercent } from "@/lib/shapes/path-utils"
 import type { Point } from "@/lib/shapes/types"
 import { cn } from "@/lib/utils"
-import { Plus } from "lucide-react"
-import { Trash9 } from "reicon-react"
+import { Plus, Trash9 } from "reicon-react"
 
 type PointListProps = {
   points: Point[]

@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { SaveIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { SaveAdd2 } from "reicon-react"
 
 type SaveShapeDialogProps = {
   onSave: (name: string) => void
@@ -36,7 +36,7 @@ export function SaveShapeDialog({ onSave }: SaveShapeDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button size="sm" variant="outline" />}>
-        <SaveIcon /> Save shape
+        <SaveAdd2 /> Save shape
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

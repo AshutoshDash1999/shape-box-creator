@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Trash2Icon } from "lucide-react"
 
 import { SaveShapeDialog } from "@/app/_components/shape-editor/save-shape-dialog"
 import { Button } from "@/components/ui/button"
@@ -11,6 +10,7 @@ import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import { pointsToClipPathPolygon } from "@/lib/shapes/path-utils"
 import { PRESET_SHAPES } from "@/lib/shapes/presets"
 import type { SavedShape } from "@/lib/shapes/types"
+import Trash9 from "reicon-react/icons/Trash9"
 
 type ShapeGalleryProps = {
   savedShapes: SavedShape[]
@@ -115,7 +115,7 @@ export function ShapeGallery({
                       onClick={() => onRemoveSaved(shape.id)}
                       aria-label={`Delete ${shape.name}`}
                     >
-                      <Trash2Icon />
+                      <Trash9 />
                     </Button>
                   </div>
                 </div>
