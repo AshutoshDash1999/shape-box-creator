@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { motion } from "motion/react"
 import { Shapes } from "reicon-react"
 
 import { Label } from "@/components/ui/label"
@@ -57,15 +58,23 @@ export function PreviewPanel({
         <span className="text-base font-semibold tracking-wide text-muted-foreground uppercase">
           Export
         </span>
-        <span className="rounded-full bg-cta/15 px-3 py-1 font-mono text-base font-medium text-cta">
+        <motion.span
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-full bg-cta/15 px-3 py-1 font-mono text-base font-medium text-cta"
+        >
           Ready
-        </span>
+        </motion.span>
       </div>
       <div
         ref={matRef}
         className="flex items-center justify-center rounded-xl border border-mat-border bg-mat p-8"
       >
-        <div
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           style={{ width: canvas.width * scale, height: canvas.height * scale }}
         >
           <div
@@ -91,7 +100,7 @@ export function PreviewPanel({
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {canvas.showSampleContent && (

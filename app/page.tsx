@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { motion, type Variants } from "motion/react"
 
 import { CodeOutput } from "@/app/_components/shape-editor/code-output"
 import { EditorCanvas } from "@/app/_components/shape-editor/editor-canvas"
@@ -21,6 +22,22 @@ import Hearts from "reicon-react/icons/Hearts"
 
 const GITHUB_REPO_URL = "https://github.com/AshutoshDash1999/shape-box-creator"
 
+const containerVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.09, delayChildren: 0.05 },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+  },
+}
+
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
@@ -39,10 +56,21 @@ export default function Page() {
       : state.fill.color1
 
   return (
-    <div className="mx-auto flex min-h-svh max-w-7xl flex-col gap-8 p-4 sm:p-6">
-      <header className="flex items-center gap-3.5">
-        <span
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="show"
+      className="mx-auto flex min-h-svh max-w-7xl flex-col gap-8 p-4 sm:p-6"
+    >
+      <motion.header
+        variants={itemVariants}
+        className="flex items-center gap-3.5"
+      >
+        <motion.span
           aria-hidden
+          initial={{ scale: 0.6, rotate: -25, opacity: 0 }}
+          animate={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           className="size-9 shrink-0 rounded-md ring-1 ring-mat-border"
           style={{
             clipPath: pointsToClipPathPolygon(state.points, 1),
@@ -62,6 +90,7 @@ export default function Page() {
           variant="outline"
           size="sm"
           title="Enjoying it? Star the repo on GitHub!"
+          nativeButton={false}
           render={
             <Link href={GITHUB_REPO_URL} target="_blank" rel="noreferrer" />
           }
@@ -69,9 +98,12 @@ export default function Page() {
           <GithubIcon className="size-4" />
           Star on GitHub
         </Button>
-      </header>
+      </motion.header>
 
-      <section className="flex flex-col gap-3 rounded-xl border bg-card p-4 ring-1 ring-foreground/10 sm:p-5">
+      <motion.section
+        variants={itemVariants}
+        className="flex flex-col gap-3 rounded-xl border bg-card p-4 ring-1 ring-foreground/10 sm:p-5"
+      >
         <ShapeGallery
           savedShapes={savedShapes}
           onSaveCurrent={(name) =>
@@ -80,9 +112,12 @@ export default function Page() {
           onRemoveSaved={remove}
           dispatch={dispatch}
         />
-      </section>
+      </motion.section>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
+      <motion.div
+        variants={itemVariants}
+        className="grid gap-6 lg:grid-cols-[1fr_400px]"
+      >
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center justify-between gap-2">
@@ -137,11 +172,26 @@ export default function Page() {
             />
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
-      <footer className="mt-auto flex items-center justify-center gap-1 pb-2 text-center text-base text-muted-foreground">
+      <motion.footer
+        variants={itemVariants}
+        className="mt-auto flex items-center justify-center gap-1 pb-2 text-center text-base text-muted-foreground"
+      >
         Made with{" "}
-        <Hearts color="red" className="text-red-500" weight="Filled" /> by{" "}
+        <motion.span
+          animate={{ scale: [1, 1.18, 1] }}
+          transition={{
+            duration: 1.1,
+            repeat: Infinity,
+            repeatDelay: 1.4,
+            ease: "easeInOut",
+          }}
+          className="inline-flex"
+        >
+          <Hearts color="red" className="text-red-500" weight="Filled" />
+        </motion.span>{" "}
+        by{" "}
         <Link
           href="https://ashutoshdash.in/"
           target="_blank"
@@ -150,7 +200,7 @@ export default function Page() {
         >
           Ashutosh Dash
         </Link>
-      </footer>
-    </div>
+      </motion.footer>
+    </motion.div>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { motion } from "motion/react"
 
 import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import {
@@ -150,14 +151,17 @@ export function EditorCanvas({
           </>
         )}
 
-        <path
+        <motion.path
           d={shapePathD}
           className="fill-primary/15 stroke-primary"
           strokeWidth={0.6}
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
         />
 
         {midpoints.map((mid, i) => (
-          <circle
+          <motion.circle
             key={`mid-${i}`}
             cx={toVb(mid).x}
             cy={toVb(mid).y}
@@ -166,22 +170,28 @@ export function EditorCanvas({
             strokeWidth={0.4}
             strokeDasharray="1.2 1.2"
             style={{ cursor: "copy" }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, delay: 0.9 + i * 0.02 }}
+            whileHover={{ scale: 1.3 }}
             onClick={handleAddPoint(i)}
           />
         ))}
 
         {points.map((p, i) => (
-          <circle
+          <motion.circle
             key={`pt-${i}`}
             cx={toVb(p).x}
             cy={toVb(p).y}
-            r={2.2}
             className={cn(
               "fill-background stroke-primary",
               selectedPointIndex === i && "fill-primary"
             )}
             strokeWidth={0.8}
             style={{ cursor: "grab", touchAction: "none" }}
+            initial={{ r: 0 }}
+            animate={{ r: selectedPointIndex === i ? 3 : 2.2 }}
+            transition={{ type: "spring", stiffness: 500, damping: 30 }}
             onPointerDown={handlePointerDown(i)}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}

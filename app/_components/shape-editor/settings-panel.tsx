@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,6 +18,20 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import type { BorderSettings, CanvasSettings, FillSettings } from "@/lib/shapes/types"
+
+function AnimatedField({ children }: { children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: "auto" }}
+      exit={{ opacity: 0, height: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="overflow-hidden"
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 type CanvasSettingsPanelProps = {
   canvas: CanvasSettings
@@ -75,19 +90,23 @@ export function CanvasSettingsPanel({
           }
         />
       </div>
-      {canvas.snapEnabled && (
-        <SliderField
-          label="Grid size"
-          value={canvas.gridSize}
-          min={1}
-          max={25}
-          step={1}
-          suffix="%"
-          onChange={(gridSize) =>
-            dispatch({ type: "SET_CANVAS", canvas: { gridSize } })
-          }
-        />
-      )}
+      <AnimatePresence initial={false}>
+        {canvas.snapEnabled && (
+          <AnimatedField key="grid-size">
+            <SliderField
+              label="Grid size"
+              value={canvas.gridSize}
+              min={1}
+              max={25}
+              step={1}
+              suffix="%"
+              onChange={(gridSize) =>
+                dispatch({ type: "SET_CANVAS", canvas: { gridSize } })
+              }
+            />
+          </AnimatedField>
+        )}
+      </AnimatePresence>
       <div className="flex items-center justify-between gap-2">
         <Label className="text-base font-normal text-muted-foreground">
           Output precision
@@ -170,28 +189,32 @@ export function SettingsPanel({
           value={fill.color1}
           onChange={(color1) => dispatch({ type: "SET_FILL", fill: { color1 } })}
         />
-        {fill.mode === "gradient" && (
-          <>
-            <ColorField
-              label="Color 2"
-              value={fill.color2}
-              onChange={(color2) =>
-                dispatch({ type: "SET_FILL", fill: { color2 } })
-              }
-            />
-            <SliderField
-              label="Angle"
-              value={fill.gradientAngle}
-              min={0}
-              max={360}
-              step={5}
-              suffix="°"
-              onChange={(gradientAngle) =>
-                dispatch({ type: "SET_FILL", fill: { gradientAngle } })
-              }
-            />
-          </>
-        )}
+        <AnimatePresence initial={false}>
+          {fill.mode === "gradient" && (
+            <AnimatedField key="gradient-fields">
+              <div className="flex flex-col gap-3">
+                <ColorField
+                  label="Color 2"
+                  value={fill.color2}
+                  onChange={(color2) =>
+                    dispatch({ type: "SET_FILL", fill: { color2 } })
+                  }
+                />
+                <SliderField
+                  label="Angle"
+                  value={fill.gradientAngle}
+                  min={0}
+                  max={360}
+                  step={5}
+                  suffix="°"
+                  onChange={(gradientAngle) =>
+                    dispatch({ type: "SET_FILL", fill: { gradientAngle } })
+                  }
+                />
+              </div>
+            </AnimatedField>
+          )}
+        </AnimatePresence>
       </section>
 
       <Separator />
@@ -208,28 +231,32 @@ export function SettingsPanel({
             }
           />
         </div>
-        {border.enabled && (
-          <>
-            <SliderField
-              label="Width"
-              value={border.width}
-              min={1}
-              max={16}
-              step={1}
-              suffix="px"
-              onChange={(width) =>
-                dispatch({ type: "SET_BORDER", border: { width } })
-              }
-            />
-            <ColorField
-              label="Color"
-              value={border.color}
-              onChange={(color) =>
-                dispatch({ type: "SET_BORDER", border: { color } })
-              }
-            />
-          </>
-        )}
+        <AnimatePresence initial={false}>
+          {border.enabled && (
+            <AnimatedField key="border-fields">
+              <div className="flex flex-col gap-3">
+                <SliderField
+                  label="Width"
+                  value={border.width}
+                  min={1}
+                  max={16}
+                  step={1}
+                  suffix="px"
+                  onChange={(width) =>
+                    dispatch({ type: "SET_BORDER", border: { width } })
+                  }
+                />
+                <ColorField
+                  label="Color"
+                  value={border.color}
+                  onChange={(color) =>
+                    dispatch({ type: "SET_BORDER", border: { color } })
+                  }
+                />
+              </div>
+            </AnimatedField>
+          )}
+        </AnimatePresence>
       </section>
     </div>
   )

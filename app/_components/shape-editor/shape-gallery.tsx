@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { SaveShapeDialog } from "@/app/_components/shape-editor/save-shape-dialog"
 import { Button } from "@/components/ui/button"
@@ -39,9 +40,12 @@ export function ShapeGallery({
         <ScrollArea className="h-36">
           <div className="flex gap-3 pr-3">
             {PRESET_SHAPES.map((preset) => (
-              <button
+              <motion.button
                 key={preset.id}
                 type="button"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.94 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
                 className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                 onClick={() =>
                   dispatch({
@@ -62,7 +66,7 @@ export function ShapeGallery({
                 <span className="text-center text-base leading-tight text-muted-foreground">
                   {preset.name}
                 </span>
-              </button>
+              </motion.button>
             ))}
           </div>
         </ScrollArea>
@@ -76,50 +80,59 @@ export function ShapeGallery({
         ) : (
           <ScrollArea className="h-36">
             <div className="flex gap-3 pr-3">
-              {savedShapes.map((shape) => (
-                <div
-                  key={shape.id}
-                  className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
-                >
-                  <button
-                    type="button"
-                    aria-label={`Load shape "${shape.name}"`}
-                    onClick={() =>
-                      dispatch({
-                        type: "LOAD_SHAPE",
-                        points: shape.points,
-                        fill: shape.fill,
-                        border: shape.border,
-                      })
-                    }
-                    className="flex size-14 items-center justify-center rounded-lg border border-mat-border bg-mat transition-colors group-hover:border-cta"
+              <AnimatePresence mode="popLayout">
+                {savedShapes.map((shape) => (
+                  <motion.div
+                    key={shape.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.85, y: 6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.85 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="group flex w-24 shrink-0 flex-col items-center gap-1.5"
                   >
-                    <span
-                      className="block size-8 rounded-xs transition-transform group-hover:scale-110"
-                      style={{
-                        clipPath: pointsToClipPathPolygon(shape.points, 1),
-                        background:
-                          shape.fill.mode === "gradient"
-                            ? `linear-gradient(${shape.fill.gradientAngle}deg, ${shape.fill.color1}, ${shape.fill.color2})`
-                            : shape.fill.color1,
-                      }}
-                    />
-                  </button>
-                  <div className="flex items-center gap-0.5">
-                    <span className="max-w-16 truncate text-base text-muted-foreground">
-                      {shape.name}
-                    </span>
-                    <Button
-                      size="icon-xs"
-                      variant="ghost"
-                      onClick={() => onRemoveSaved(shape.id)}
-                      aria-label={`Delete ${shape.name}`}
+                    <motion.button
+                      type="button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.94 }}
+                      aria-label={`Load shape "${shape.name}"`}
+                      onClick={() =>
+                        dispatch({
+                          type: "LOAD_SHAPE",
+                          points: shape.points,
+                          fill: shape.fill,
+                          border: shape.border,
+                        })
+                      }
+                      className="flex size-14 items-center justify-center rounded-lg border border-mat-border bg-mat transition-colors group-hover:border-cta"
                     >
-                      <Trash9 />
-                    </Button>
-                  </div>
-                </div>
-              ))}
+                      <span
+                        className="block size-8 rounded-xs transition-transform group-hover:scale-110"
+                        style={{
+                          clipPath: pointsToClipPathPolygon(shape.points, 1),
+                          background:
+                            shape.fill.mode === "gradient"
+                              ? `linear-gradient(${shape.fill.gradientAngle}deg, ${shape.fill.color1}, ${shape.fill.color2})`
+                              : shape.fill.color1,
+                        }}
+                      />
+                    </motion.button>
+                    <div className="flex items-center gap-0.5">
+                      <span className="max-w-16 truncate text-base text-muted-foreground">
+                        {shape.name}
+                      </span>
+                      <Button
+                        size="icon-xs"
+                        variant="ghost"
+                        onClick={() => onRemoveSaved(shape.id)}
+                        aria-label={`Delete ${shape.name}`}
+                      >
+                        <Trash9 />
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           </ScrollArea>
         )}

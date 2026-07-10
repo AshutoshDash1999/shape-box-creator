@@ -1,5 +1,7 @@
 "use client"
 
+import { AnimatePresence, motion } from "motion/react"
+
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
@@ -46,15 +48,31 @@ function CodeBlock({ code }: { code: string }) {
         onClick={() => copy(code)}
         aria-live="polite"
       >
-        {copied ? (
-          <>
-            <CopySuccess2 /> Copied
-          </>
-        ) : (
-          <>
-            <Copy3 /> Copy
-          </>
-        )}
+        <AnimatePresence mode="popLayout" initial={false}>
+          {copied ? (
+            <motion.span
+              key="copied"
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.15 }}
+              className="inline-flex items-center gap-1.5"
+            >
+              <CopySuccess2 /> Copied
+            </motion.span>
+          ) : (
+            <motion.span
+              key="copy"
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 6 }}
+              transition={{ duration: 0.15 }}
+              className="inline-flex items-center gap-1.5"
+            >
+              <Copy3 /> Copy
+            </motion.span>
+          )}
+        </AnimatePresence>
       </Button>
     </div>
   )

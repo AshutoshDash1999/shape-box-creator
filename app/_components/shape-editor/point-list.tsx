@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { AnimatePresence, motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -55,61 +56,68 @@ export function PointList({
       </div>
       <ScrollArea className="h-56 rounded-lg border">
         <div className="flex flex-col gap-1.5 p-2">
-          {points.map((p, i) => (
-            <div
-              key={i}
-              className={cn(
-                "flex items-center gap-2 rounded-md px-1 py-1",
-                selectedPointIndex === i && "bg-accent"
-              )}
-            >
-              <button
-                type="button"
-                onClick={() => dispatch({ type: "SELECT_POINT", index: i })}
-                aria-label={`Select point ${i + 1}`}
+          <AnimatePresence initial={false}>
+            {points.map((p, i) => (
+              <motion.div
+                key={i}
+                layout
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
                 className={cn(
-                  "w-6 shrink-0 rounded-sm font-mono text-base text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
-                  selectedPointIndex === i && "font-semibold text-cta"
+                  "flex items-center gap-2 overflow-hidden rounded-md px-1 py-1",
+                  selectedPointIndex === i && "bg-accent"
                 )}
               >
-                {i + 1}
-              </button>
-              <Input
-                type="number"
-                value={Math.round(p.x * 10) / 10}
-                onChange={handleCoordinateChange(i, "x")}
-                onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
-                className="h-9 font-mono tabular-nums"
-                min={0}
-                max={100}
-                step={0.5}
-                aria-label={`Point ${i + 1} x position`}
-              />
-              <Input
-                type="number"
-                value={Math.round(p.y * 10) / 10}
-                onChange={handleCoordinateChange(i, "y")}
-                onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
-                className="h-9 font-mono tabular-nums"
-                min={0}
-                max={100}
-                step={0.5}
-                aria-label={`Point ${i + 1} y position`}
-              />
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                disabled={points.length <= MIN_POINTS}
-                onClick={(event) => {
-                  event.stopPropagation()
-                  dispatch({ type: "REMOVE_POINT", index: i })
-                }}
-                aria-label={`Delete point ${i + 1}`}
-              >
-                <Trash9 />
-              </Button>
-            </div>
-          ))}
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: "SELECT_POINT", index: i })}
+                  aria-label={`Select point ${i + 1}`}
+                  className={cn(
+                    "w-6 shrink-0 rounded-sm font-mono text-base text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                    selectedPointIndex === i && "font-semibold text-cta"
+                  )}
+                >
+                  {i + 1}
+                </button>
+                <Input
+                  type="number"
+                  value={Math.round(p.x * 10) / 10}
+                  onChange={handleCoordinateChange(i, "x")}
+                  onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
+                  className="h-9 font-mono tabular-nums"
+                  min={0}
+                  max={100}
+                  step={0.5}
+                  aria-label={`Point ${i + 1} x position`}
+                />
+                <Input
+                  type="number"
+                  value={Math.round(p.y * 10) / 10}
+                  onChange={handleCoordinateChange(i, "y")}
+                  onFocus={() => dispatch({ type: "SELECT_POINT", index: i })}
+                  className="h-9 font-mono tabular-nums"
+                  min={0}
+                  max={100}
+                  step={0.5}
+                  aria-label={`Point ${i + 1} y position`}
+                />
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  disabled={points.length <= MIN_POINTS}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    dispatch({ type: "REMOVE_POINT", index: i })
+                  }}
+                  aria-label={`Delete point ${i + 1}`}
+                >
+                  <Trash9 />
+                </Button>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </ScrollArea>
     </div>
