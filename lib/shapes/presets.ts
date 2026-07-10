@@ -6,11 +6,6 @@ function pts(...coords: [number, number][]) {
 
 export const PRESET_SHAPES: PresetShape[] = [
   {
-    id: "rectangle",
-    name: "Rectangle",
-    points: pts([0, 0], [100, 0], [100, 100], [0, 100]),
-  },
-  {
     id: "notched-corner",
     name: "Notched Corner",
     points: pts([0, 0], [80, 0], [100, 20], [100, 100], [0, 100]),
@@ -78,25 +73,6 @@ export const PRESET_SHAPES: PresetShape[] = [
     ),
   },
   {
-    id: "hexagon",
-    name: "Hexagon",
-    points: pts([25, 0], [75, 0], [100, 50], [75, 100], [25, 100], [0, 50]),
-  },
-  {
-    id: "octagon",
-    name: "Octagon",
-    points: pts(
-      [30, 0],
-      [70, 0],
-      [100, 30],
-      [100, 70],
-      [70, 100],
-      [30, 100],
-      [0, 70],
-      [0, 30]
-    ),
-  },
-  {
     id: "slanted-parallelogram",
     name: "Slanted Block",
     points: pts([15, 0], [100, 0], [85, 100], [0, 100]),
@@ -147,5 +123,45 @@ export const PRESET_SHAPES: PresetShape[] = [
       [0, 14]
     ),
     cornerRadius: 8,
+  },
+  {
+    id: "hud-readout",
+    name: "HUD Readout",
+    points: pts([0, 15], [15, 0], [100, 0], [100, 85], [85, 100], [0, 100]),
+    cornerRadius: 3,
+  },
+  {
+    id: "hud-terminal",
+    name: "HUD Terminal",
+    points: pts(
+      [0, 0],
+      [70, 0],
+      [82, 12],
+      [100, 12],
+      [100, 100],
+      [30, 100],
+      [18, 88],
+      [0, 88]
+    ),
+    cornerRadius: 4,
+  },
+  {
+    id: "hud-corner-frame",
+    name: "HUD Corner Frame",
+    points: pts(
+      [10, 0],
+      [90, 0],
+      [90, 10],
+      [100, 10],
+      [100, 90],
+      [90, 90],
+      [90, 100],
+      [10, 100],
+      [10, 90],
+      [0, 90],
+      [0, 10],
+      [10, 10]
+    ),
+    cornerRadius: 2,
   },
 ]
