@@ -1,11 +1,10 @@
 "use client"
 
-import * as React from "react"
 import { motion } from "motion/react"
+import * as React from "react"
 
 import type { ShapeEditorAction } from "@/hooks/use-shape-editor"
 import {
-  clampPercent,
   getEdgeMidpoints,
   pointsToSvgPathD,
   resolvePercent,
@@ -46,6 +45,9 @@ export function EditorCanvas({
   const svgRef = React.useRef<SVGSVGElement>(null)
   const dragIndexRef = React.useRef<number | null>(null)
   const dragRectRef = React.useRef<DOMRect | null>(null)
+  const [activePointIndex, setActivePointIndex] = React.useState<
+    number | null
+  >(null)
 
   const aspectRatio = canvasWidth / canvasHeight
   const viewBoxWidth = 100 * aspectRatio
@@ -55,6 +57,24 @@ export function EditorCanvas({
   const cornerRadiusVb = cornerRadius * (100 / canvasHeight)
 
   const toVb = (p: Point) => ({ x: p.x * aspectRatio, y: p.y })
+  const toPx = (p: Point) => ({
+    x: (p.x / 100) * canvasWidth,
+    y: (p.y / 100) * canvasHeight,
+  })
+
+  // Anchors the coordinate label up-right of the point by default, flipping
+  // to whichever side keeps it inside the visible canvas near an edge.
+  const LABEL_GAP = 5
+  const LABEL_WIDTH = 34
+  const LABEL_HEIGHT = 13
+  function getLabelBox(point: Point, vb: { x: number; y: number }) {
+    const flipX = point.x > 80
+    const flipY = point.y < 15
+    return {
+      x: flipX ? vb.x - LABEL_GAP - LABEL_WIDTH : vb.x + LABEL_GAP,
+      y: flipY ? vb.y + LABEL_GAP : vb.y - LABEL_GAP - LABEL_HEIGHT,
+    }
+  }
 
   const shapePathD = pointsToSvgPathD(
     points,
@@ -84,6 +104,7 @@ export function EditorCanvas({
       if (!rect) return
       dragIndexRef.current = index
       dragRectRef.current = rect
+      setActivePointIndex(index)
       event.currentTarget.setPointerCapture(event.pointerId)
       dispatch({ type: "SELECT_POINT", index })
     }
@@ -103,7 +124,15 @@ export function EditorCanvas({
     }
     dragIndexRef.current = null
     dragRectRef.current = null
+    setActivePointIndex(null)
   }
+
+  const activePoint =
+    activePointIndex !== null ? points[activePointIndex] : null
+  const activeVb = activePoint ? toVb(activePoint) : null
+  const activePx = activePoint ? toPx(activePoint) : null
+  const labelBox =
+    activePoint && activeVb ? getLabelBox(activePoint, activeVb) : null
 
   function handleAddPoint(edgeIndex: number) {
     return () => {
@@ -198,6 +227,55 @@ export function EditorCanvas({
             onPointerCancel={handlePointerUp}
           />
         ))}
+
+        {activePoint && activeVb && activePx && labelBox && (
+          <g className="pointer-events-none">
+            <line
+              x1={activeVb.x}
+              x2={activeVb.x}
+              y1={0}
+              y2={viewBoxHeight}
+              className="stroke-primary/40"
+              strokeWidth={0.3}
+              strokeDasharray="1.5 1.5"
+            />
+            <line
+              x1={0}
+              x2={viewBoxWidth}
+              y1={activeVb.y}
+              y2={activeVb.y}
+              className="stroke-primary/40"
+              strokeWidth={0.3}
+              strokeDasharray="1.5 1.5"
+            />
+            <rect
+              x={labelBox.x}
+              y={labelBox.y}
+              width={LABEL_WIDTH}
+              height={LABEL_HEIGHT}
+              rx={2}
+              className="fill-background stroke-primary/30"
+              strokeWidth={0.4}
+            />
+            <text
+              x={labelBox.x + 3}
+              y={labelBox.y + 5.4}
+              className="fill-foreground font-mono"
+              style={{ fontSize: 4.2 }}
+            >
+              {Math.round(activePoint.x * 10) / 10}%,{" "}
+              {Math.round(activePoint.y * 10) / 10}%
+            </text>
+            <text
+              x={labelBox.x + 3}
+              y={labelBox.y + 10.4}
+              className="fill-muted-foreground font-mono"
+              style={{ fontSize: 3.2 }}
+            >
+              {Math.round(activePx.x)}px, {Math.round(activePx.y)}px
+            </text>
+          </g>
+        )}
       </svg>
     </div>
   )
