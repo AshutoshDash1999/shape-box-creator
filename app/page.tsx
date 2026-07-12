@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useSavedShapes } from "@/hooks/use-saved-shapes"
 import { useShapeEditor } from "@/hooks/use-shape-editor"
+import { APP_VERSION } from "@/lib/constants"
 import { pointsToClipPathPolygon } from "@/lib/shapes/path-utils"
 import Hearts from "reicon-react/icons/Hearts"
 
@@ -88,9 +89,14 @@ export default function Page() {
           }}
         />
         <div className="flex flex-1 flex-col gap-0.5">
-          <h1 className="font-heading text-xl font-extrabold tracking-tight">
-            Shape Box Creator
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-heading text-xl font-extrabold tracking-tight">
+              Shape Box Creator
+            </h1>
+            <span className="rounded-full border px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
+              v{APP_VERSION}
+            </span>
+          </div>
           <p className="text-base text-muted-foreground">
             Drag polygon points to design unconventional UI blocks, then copy
             the clip-path or SVG.
